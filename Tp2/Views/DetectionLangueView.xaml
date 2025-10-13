@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="Tp2.Views.DetectionLangueView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="480" d:DesignWidth="820">
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Titres -->
+        <Label Grid.Row="0" Grid.Column="0"
+               Content="Entrez le texte pour lequel vous voulez détecter la langue :" />
+        <Label Grid.Row="0" Grid.Column="1"
+               Content="Résultat de la détection :" />
+
+        <!-- Zone de texte -->
+        <TextBox Grid.Row="1" Grid.Column="0"
+                 x:Name="txtInput"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto"
+                 MinHeight="220"/>
+
+        <!-- Résultats -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="14,0,0,0">
+            <ComboBox x:Name="cmbLangues" />
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Langue :" />
+                <TextBlock x:Name="txtLangue" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Confiance :" />
+                <TextBlock x:Name="txtConfiance" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Est fiable :" />
+                <TextBlock x:Name="txtFiable" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Bouton Détecter -->
+        <Button Grid.Row="2" Grid.Column="0"
+                x:Name="btnDetecter"
+                Content="Détecter"
+                Width="150"
+                HorizontalAlignment="Left"
+                Margin="0,10,0,0"/>
+    </Grid>
+</UserControl>

@@ -1,12 +1,34 @@
 ﻿<Window x:Class="Tp2.Views.MainView"
+        x:Name="win"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tp2.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="450" Width="800">
+        Title="Détecteur de langue"
+        Height="520" Width="880"
+        WindowStartupLocation="CenterScreen">
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Menu -->
+            <RowDefinition Height="*"/>
+            <!-- Contenu -->
+        </Grid.RowDefinitions>
+
+        <!-- Menu principal -->
+        <Menu Width="{Binding ElementName=win, Path=ActualWidth}">
+            <MenuItem Header="_Configuration">
+                <!-- on branchera Command plus tard -->
+                <MenuItem x:Name="menuConfigurerJeton" Header="_Configurer le jeton…" />
+            </MenuItem>
+            <!-- on branchera Command plus tard -->
+            <MenuItem x:Name="menuStatutJeton" Header="_Statut jeton" />
+        </Menu>
+
+        <!-- Contenu principal : UserControl -->
+        <local:DetectionLangueView Grid.Row="1"/>
     </Grid>
 </Window>
