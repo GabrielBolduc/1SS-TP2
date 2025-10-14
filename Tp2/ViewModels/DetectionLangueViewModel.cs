@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Tp2.ViewModels
 {
@@ -29,17 +30,26 @@ namespace Tp2.ViewModels
 
         public DetectionLangueViewModel()
         {
-            DetectCommand = new RelayCommand(_ => DetectStub(), _ => !string.IsNullOrWhiteSpace(InputText));
+            DetectCommand = new RelayCommand(_ => Detect(), _ => !string.IsNullOrWhiteSpace(InputText));
         }
 
-        private void DetectStub()
+        private void Detect()
         {
-            // stub pour étape 1
+            var token = Properties.Settings.Default.ApiToken;
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                MessageBox.Show("Aucun jeton configuré. Ouvrez Configuration et entrez votre API token.",
+                                "Détection", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Étape 2 : stub d’affichage
             Resultats.Clear();
             Resultats.Add("FRENCH");
             Resultats.Add("ENGLISH");
             SelectedResult = "FRENCH";
+
+            // Étape 3 : appel HTTP réel vers /detect (avec token)
         }
     }
 }
-
