@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace Tp2.ViewModels
 {
-    internal class ConfigurationViewModel
-    {
-    }
+   
 }

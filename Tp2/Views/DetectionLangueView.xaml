@@ -17,13 +17,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Titres -->
         <Label Grid.Row="0" Grid.Column="0"
                Content="Entrez le texte pour lequel vous voulez détecter la langue :" />
         <Label Grid.Row="0" Grid.Column="1"
                Content="Résultat de la détection :" />
 
-        <!-- Zone de texte -->
         <TextBox Grid.Row="1" Grid.Column="0"
                  x:Name="txtInput"
                  AcceptsReturn="True"

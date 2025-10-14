@@ -5,28 +5,37 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tp2.Views"
+        xmlns:viewModel="clr-namespace:Tp2.ViewModels"
         mc:Ignorable="d"
         Title="Détecteur de langue"
         Height="520" Width="880"
         WindowStartupLocation="CenterScreen">
 
+    <!-- VM principal -->
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Menu -->
             <RowDefinition Height="*"/>
+            <!-- Contenu -->
         </Grid.RowDefinitions>
 
-        <!-- Menu principal -->
+        <!-- Menu -->
         <Menu Width="{Binding ElementName=win, Path=ActualWidth}">
             <MenuItem Header="_Configuration">
-                <!-- on branchera Command plus tard -->
-                <MenuItem x:Name="menuConfigurerJeton" Header="_Configurer le jeton…" />
+                <MenuItem Header="_Configurer le jeton…"
+                          Command="{Binding OpenConfigWindowCmd}"/>
             </MenuItem>
-            <!-- on branchera Command plus tard -->
-            <MenuItem x:Name="menuStatutJeton" Header="_Statut jeton" />
+            <MenuItem Header="_Statut jeton"
+                      Command="{Binding OpenStatusWindowCmd}"/>
         </Menu>
 
-        <!-- Contenu principal : UserControl -->
-        <local:DetectionLangueView Grid.Row="1"/>
+        <!-- Contenu principal: le UserControl de détection -->
+        <local:DetectionLangueView Grid.Row="1"
+                                   DataContext="{Binding DetectionVM}" />
     </Grid>
 </Window>
