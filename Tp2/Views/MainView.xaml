@@ -24,17 +24,15 @@
             <!-- Contenu -->
         </Grid.RowDefinitions>
 
-        <!-- Menu -->
+        <!-- Menu (1 clic = ouvre la fenêtre) -->
         <Menu Width="{Binding ElementName=win, Path=ActualWidth}">
-            <MenuItem Header="_Configuration">
-                <MenuItem Header="_Configurer le jeton…"
-                          Command="{Binding OpenConfigWindowCmd}"/>
-            </MenuItem>
+            <MenuItem Header="_Configuration"
+                      Command="{Binding OpenConfigWindowCmd}" />
             <MenuItem Header="_Statut jeton"
-                      Command="{Binding OpenStatusWindowCmd}"/>
+                      Command="{Binding OpenStatusWindowCmd}" />
         </Menu>
 
-        <!-- Contenu principal: le UserControl de détection -->
+        <!-- Contenu principal : UserControl -->
         <local:DetectionLangueView Grid.Row="1"
                                    DataContext="{Binding DetectionVM}" />
     </Grid>

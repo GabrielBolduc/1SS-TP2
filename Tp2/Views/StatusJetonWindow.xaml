@@ -7,14 +7,20 @@
         ResizeMode="NoResize">
     <ScrollViewer Margin="10">
         <StackPanel>
-            <TextBlock x:Name="txtInfos"
+            <TextBlock Text="{Binding Status}"
                        TextWrapping="Wrap"
                        FontFamily="Consolas"
                        FontSize="13"
                        Margin="0,0,0,10"/>
-            <Button Content="Fermer" IsCancel="True"
+            <Button Content="Rafraîchir"
+                    Command="{Binding RafraichirCommand}"
                     Width="100"
-                    HorizontalAlignment="Right"/>
+                    HorizontalAlignment="Left"/>
+            <Button Content="Fermer"
+                    IsCancel="True"
+                    Width="100"
+                    HorizontalAlignment="Right"
+                    Margin="0,12,0,0"/>
         </StackPanel>
     </ScrollViewer>
 </Window>
