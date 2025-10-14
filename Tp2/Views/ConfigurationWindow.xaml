@@ -22,8 +22,8 @@
                     IsDefault="True"
                     Margin="0,10,10,0" Width="100" />
             <Button Content="Annuler"
-                    IsCancel="True"
-                    Width="100" />
+                    Width="100"
+                    IsCancel="True"/>
         </StackPanel>
     </Grid>
 </Window>

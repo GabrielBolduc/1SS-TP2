@@ -1,27 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Tp2.ViewModels;
 
 namespace Tp2.Views
 {
-    /// <summary>
-    /// Interaction logic for ConfigurationWindow.xaml
-    /// </summary>
     public partial class ConfigurationWindow : Window
     {
         public ConfigurationWindow()
         {
             InitializeComponent();
+
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object? sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is ConfigurationViewModel oldVm)
+                oldVm.RequestClose -= OnVmRequestClose;
+
+            if (e.NewValue is ConfigurationViewModel newVm)
+                newVm.RequestClose += OnVmRequestClose;
+        }
+
+        private void OnVmRequestClose(object? sender, EventArgs e)
+        {
+            DialogResult = true;
+            Close();
         }
     }
 }

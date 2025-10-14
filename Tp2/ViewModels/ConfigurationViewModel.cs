@@ -16,18 +16,14 @@ namespace Tp2.ViewModels
             set => Set(ref _jeton, value);
         }
 
-        private bool? _dialogResult;
-        public bool? DialogResult
-        {
-            get => _dialogResult;
-            set => Set(ref _dialogResult, value);
-        }
-
         public RelayCommand SauverCommand { get; }
-        public RelayCommand AnnulerCommand { get; }
+
+        // Événement utilisé pour fermer la fenêtre
+        public event EventHandler? RequestClose;
 
         public ConfigurationViewModel()
         {
+            // Charger la valeur actuelle du jeton sauvegardé
             Jeton = Properties.Settings.Default.ApiToken ?? string.Empty;
 
             SauverCommand = new RelayCommand(_ =>
@@ -45,10 +41,9 @@ namespace Tp2.ViewModels
                 MessageBox.Show("Jeton sauvegardé.", "Configuration",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
 
-                DialogResult = true; // ferme la fenêtre
+                // Demande à la vue de se fermer
+                RequestClose?.Invoke(this, EventArgs.Empty);
             });
-
-            AnnulerCommand = new RelayCommand(_ => DialogResult = false);
         }
     }
 }
