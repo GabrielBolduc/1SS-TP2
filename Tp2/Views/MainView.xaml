@@ -11,7 +11,6 @@
         Height="520" Width="880"
         WindowStartupLocation="CenterScreen">
 
-    <!-- VM principal -->
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
@@ -19,12 +18,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Menu -->
             <RowDefinition Height="*"/>
-            <!-- Contenu -->
         </Grid.RowDefinitions>
 
-        <!-- Menu (1 clic = ouvre la fenêtre) -->
         <Menu Width="{Binding ElementName=win, Path=ActualWidth}">
             <MenuItem Header="_Configuration"
                       Command="{Binding OpenConfigWindowCmd}" />
@@ -32,7 +28,6 @@
                       Command="{Binding OpenStatusWindowCmd}" />
         </Menu>
 
-        <!-- Contenu principal : UserControl -->
         <local:DetectionLangueView Grid.Row="1"
                                    DataContext="{Binding DetectionVM}" />
     </Grid>

@@ -15,6 +15,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0"
@@ -23,34 +24,43 @@
                Content="Résultat de la détection :" />
 
         <TextBox Grid.Row="1" Grid.Column="0"
-                 x:Name="txtInput"
+                 Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True"
                  AcceptsTab="True"
                  TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Auto"
+                 IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}, FallbackValue=True}"
                  MinHeight="220"/>
 
-        <!-- Résultats -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="14,0,0,0">
-            <ComboBox x:Name="cmbLangues" />
+            <ComboBox ItemsSource="{Binding Resultats}"
+                      SelectedItem="{Binding SelectedResult}"
+                      DisplayMemberPath="LanguageName"
+                      IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}, FallbackValue=True}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Langue :" />
-                <TextBlock x:Name="txtLangue" />
+                <TextBlock Text="{Binding SelectedResult.LanguageName}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Confiance :" />
-                <TextBlock x:Name="txtConfiance" />
+                <TextBlock Text="{Binding SelectedResult.Confidence}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Est fiable :" />
-                <TextBlock x:Name="txtFiable" />
+                <TextBlock Text="{Binding SelectedResult.IsReliable}" />
             </StackPanel>
         </StackPanel>
 
-        <!-- Bouton Détecter -->
-        <Button Grid.Row="2" Grid.Column="0"
-                x:Name="btnDetecter"
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
+                   Text="{Binding BusyText}"
+                   Foreground="Gray"
+                   FontStyle="Italic"
+                   Margin="0,8,0,0"
+                   Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"/>
+
+        <Button Grid.Row="3" Grid.Column="0"
                 Content="Détecter"
+                Command="{Binding DetectCommand}"
                 Width="150"
                 HorizontalAlignment="Left"
                 Margin="0,10,0,0"/>
