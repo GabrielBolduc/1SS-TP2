@@ -39,7 +39,6 @@ namespace Tp2.ViewModels
 
         private async Task DetectAsync()
         {
-            // 3.2 Règle du sujet: si pas de token -> erreur
             var token = Properties.Settings.Default.ApiToken;
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -57,7 +56,6 @@ namespace Tp2.ViewModels
             }
             catch (HttpRequestException ex)
             {
-                // 401: token invalide, 429: limites, 4xx/5xx: autres
                 MessageBox.Show($"Erreur HTTP lors de la détection:\n{ex.Message}",
                                 "Détection", MessageBoxButton.OK, MessageBoxImage.Error);
             }

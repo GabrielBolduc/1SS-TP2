@@ -20,7 +20,7 @@ namespace Tp2.ViewModels
         }
 
         public AsyncCommand RafraichirCommand { get; }
-        public RelayCommand FermerCommand { get; } // si tu as gardé la fermeture via VM
+        public RelayCommand FermerCommand { get; }
 
         public event EventHandler? RequestClose;
 

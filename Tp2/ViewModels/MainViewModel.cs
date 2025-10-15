@@ -10,14 +10,11 @@ namespace Tp2.ViewModels
 {
     public sealed class MainViewModel : BaseViewModel
     {
-        // VM affichée dans la page principale
         public DetectionLangueViewModel DetectionVM { get; }
 
-        // Commands du menu (ouvrent directement les pop-ups)
         public RelayCommand OpenConfigWindowCmd { get; }
         public RelayCommand OpenStatusWindowCmd { get; }
 
-        // Service de fenêtres
         private readonly IWindowService _windows;
 
         // VMs des pop-ups
