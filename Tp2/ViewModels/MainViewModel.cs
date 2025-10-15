@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tp2.Services;
+using Tp2.ViewModels.Commands;
 
 namespace Tp2.ViewModels
 {

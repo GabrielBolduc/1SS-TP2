@@ -1,40 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 using System.Windows;
+using Tp2.Models;
+using Tp2.ViewModels.Commands;
 
 namespace Tp2.ViewModels
 {
     public sealed class DetectionLangueViewModel : BaseViewModel
     {
+        private readonly DetectLanguageService _service = new();
+
         private string _inputText = "";
         public string InputText
         {
             get => _inputText;
-            set { if (Set(ref _inputText, value)) DetectCommand.RaiseCanExecuteChanged(); }
+            set
+            {
+                if (Set(ref _inputText, value)) DetectCommand.RaiseCanExecuteChanged();
+            }
         }
 
-        public ObservableCollection<string> Resultats { get; } = new();
+        public ObservableCollection<DetectionCandidate> Resultats { get; } = new();
 
-        private string? _selected;
-        public string? SelectedResult
+        private DetectionCandidate? _selected;
+        public DetectionCandidate? SelectedResult
         {
             get => _selected;
             set => Set(ref _selected, value);
         }
 
-        public RelayCommand DetectCommand { get; }
+        public AsyncCommand DetectCommand { get; }
 
         public DetectionLangueViewModel()
         {
-            DetectCommand = new RelayCommand(_ => Detect(), _ => !string.IsNullOrWhiteSpace(InputText));
+            DetectCommand = new AsyncCommand(DetectAsync, () => !string.IsNullOrWhiteSpace(InputText));
         }
 
-        private void Detect()
+        private async Task DetectAsync()
         {
+            // 3.2 Règle du sujet: si pas de token -> erreur
             var token = Properties.Settings.Default.ApiToken;
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -43,13 +48,24 @@ namespace Tp2.ViewModels
                 return;
             }
 
-            // Étape 2 : stub d’affichage
-            Resultats.Clear();
-            Resultats.Add("FRENCH");
-            Resultats.Add("ENGLISH");
-            SelectedResult = "FRENCH";
-
-            // Étape 3 : appel HTTP réel vers /detect (avec token)
+            try
+            {
+                Resultats.Clear();
+                var list = await _service.DetectAsync(InputText.Trim());
+                foreach (var item in list) Resultats.Add(item);
+                SelectedResult = Resultats.Count > 0 ? Resultats[0] : null;
+            }
+            catch (HttpRequestException ex)
+            {
+                // 401: token invalide, 429: limites, 4xx/5xx: autres
+                MessageBox.Show($"Erreur HTTP lors de la détection:\n{ex.Message}",
+                                "Détection", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la détection:\n{ex.Message}",
+                                "Détection", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
