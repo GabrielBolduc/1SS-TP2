@@ -19,12 +19,10 @@ namespace Tp2.ViewModels
 
         public RelayCommand SauverCommand { get; }
 
-        // Événement utilisé pour fermer la fenêtre
         public event EventHandler? RequestClose;
 
         public ConfigurationViewModel()
         {
-            // Charger la valeur actuelle du jeton sauvegardé
             Jeton = Properties.Settings.Default.ApiToken ?? string.Empty;
 
             SauverCommand = new RelayCommand(_ =>

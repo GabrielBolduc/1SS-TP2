@@ -24,7 +24,6 @@ namespace Tp2.Views
 
         private void OnVmRequestClose(object? sender, EventArgs e)
         {
-            DialogResult = true;
             Close();
         }
     }

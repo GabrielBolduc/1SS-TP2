@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Tp2.Views;
 
 namespace Tp2.Services
@@ -23,7 +22,7 @@ namespace Tp2.Services
                 Owner = Application.Current.MainWindow,
                 DataContext = viewModel
             };
-            win.ShowDialog();
+            win.ShowDialog();     
         }
     }
 }
