@@ -72,9 +72,8 @@ namespace Tp2.ViewModels
                 return;
             }
 
-            // Garde-fou taille (plan gratuit)
             var bytes = Encoding.UTF8.GetByteCount(InputText);
-            const int softLimit = 256 * 1024; // 256 Ko
+            const int softLimit = 256 * 1024;
             if (bytes > softLimit)
             {
                 var go = MessageBox.Show(
