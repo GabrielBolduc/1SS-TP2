@@ -1,26 +1,71 @@
 ﻿<Window x:Class="Tp2.Views.StatusJetonWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Statut du jeton"
-        Height="360" Width="420"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
-    <ScrollViewer Margin="10">
-        <StackPanel>
-            <TextBlock Text="{Binding Status}"
-                       TextWrapping="Wrap"
-                       FontFamily="Consolas"
-                       FontSize="13"
-                       Margin="0,0,0,10"/>
-            <Button Content="Rafraîchir"
-                    Command="{Binding RafraichirCommand}"
-                    Width="100"
-                    HorizontalAlignment="Left"/>
-            <Button Content="Fermer"
-                    IsCancel="True"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Margin="0,12,0,0"/>
+        Title="Statut du jeton" Height="380" Width="420"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        SnapsToDevicePixels="True" UseLayoutRounding="True">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Date" Margin="0,6"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Date}" Margin="0,6"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Requêtes aujourd'hui" Margin="0,6"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding RequestsToday}" Margin="0,6"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Octets aujourd'hui" Margin="0,6"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding BytesToday}" Margin="0,6"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Plan" Margin="0,6"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Plan}" Margin="0,6"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Expiration du plan" Margin="0,6"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding PlanExpires}" Margin="0,6"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Limite requêtes quotidienne" Margin="0,6"/>
+            <TextBlock Grid.Row="5" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding DailyRequestsLimit}" Margin="0,6"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Limite octets quotidienne" Margin="0,6"/>
+            <TextBlock Grid.Row="6" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="6" Grid.Column="2" Text="{Binding DailyBytesLimit}" Margin="0,6"/>
+
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="Statut" Margin="0,6"/>
+            <TextBlock Grid.Row="7" Grid.Column="1" Text=":" Margin="8,6"/>
+            <TextBlock Grid.Row="7" Grid.Column="2" Text="{Binding Status}" Margin="0,6"/>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Content="Rafraîchir" Width="110" Margin="0,0,10,0"
+                    Command="{Binding RafraichirCommand}" />
+            <Button Content="Fermer" Width="110"
+                    Command="{Binding FermerCommand}" />
         </StackPanel>
-    </ScrollViewer>
+    </Grid>
 </Window>

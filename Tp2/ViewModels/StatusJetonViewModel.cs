@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Tp2.Models;
@@ -12,16 +11,32 @@ namespace Tp2.ViewModels
     {
         private readonly DetectLanguageService _service = new();
 
-        private string _status = "Aucun statut chargé.";
-        public string Status
-        {
-            get => _status;
-            set => Set(ref _status, value);
-        }
+        private string _date = "";
+        public string Date { get => _date; set => Set(ref _date, value); }
+
+        private int _requestsToday;
+        public int RequestsToday { get => _requestsToday; set => Set(ref _requestsToday, value); }
+
+        private int _bytesToday;
+        public int BytesToday { get => _bytesToday; set => Set(ref _bytesToday, value); }
+
+        private string _plan = "";
+        public string Plan { get => _plan; set => Set(ref _plan, value); }
+
+        private string _planExpires = "";
+        public string PlanExpires { get => _planExpires; set => Set(ref _planExpires, value); }
+
+        private int _dailyRequestsLimit;
+        public int DailyRequestsLimit { get => _dailyRequestsLimit; set => Set(ref _dailyRequestsLimit, value); }
+
+        private int _dailyBytesLimit;
+        public int DailyBytesLimit { get => _dailyBytesLimit; set => Set(ref _dailyBytesLimit, value); }
+
+        private string _status = "";
+        public string Status { get => _status; set => Set(ref _status, value); }
 
         public AsyncCommand RafraichirCommand { get; }
         public RelayCommand FermerCommand { get; }
-
         public event EventHandler? RequestClose;
 
         public StatusJetonViewModel()
@@ -43,15 +58,15 @@ namespace Tp2.ViewModels
             try
             {
                 var st = await _service.GetStatusAsync();
-                var sb = new StringBuilder();
-                sb.AppendLine($"Plan: {st.plan}");
-                sb.AppendLine($"Statut: {st.status}");
-                sb.AppendLine($"Date: {st.date}");
-                sb.AppendLine($"Requêtes aujourd'hui: {st.requests_today} / {st.daily_requests_limit}");
-                sb.AppendLine($"Octets aujourd'hui: {st.bytes_today} / {st.daily_bytes_limit}");
-                if (!string.IsNullOrWhiteSpace(st.plan_expires))
-                    sb.AppendLine($"Expiration du plan: {st.plan_expires}");
-                Status = sb.ToString();
+
+                Date = st.date;
+                RequestsToday = st.requests_today;
+                BytesToday = st.bytes_today;
+                Plan = st.plan;
+                PlanExpires = string.IsNullOrWhiteSpace(st.plan_expires) ? "" : st.plan_expires;
+                DailyRequestsLimit = st.daily_requests_limit;
+                DailyBytesLimit = st.daily_bytes_limit;
+                Status = st.status;
             }
             catch (HttpRequestException ex)
             {
