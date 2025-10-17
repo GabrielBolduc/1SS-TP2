@@ -4,65 +4,68 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="480" d:DesignWidth="820">
-
+             d:DesignHeight="420" d:DesignWidth="820">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"   />
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0"
-               Content="Entrez le texte pour lequel vous voulez détecter la langue :" />
-        <Label Grid.Row="0" Grid.Column="1"
-               Content="Résultat de la détection :" />
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   Text="Entrez le texte pour lequel vous voulez détecter la langue :"
+                   Margin="0,0,0,6"/>
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   Text="Résultat de la détection :"
+                   Margin="14,0,0,6"/>
 
+        <!-- Zone de texte : multiligne -->
         <TextBox Grid.Row="1" Grid.Column="0"
                  Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True"
                  AcceptsTab="True"
                  TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Auto"
-                 IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}, FallbackValue=True}"
-                 MinHeight="220"/>
+                 MinHeight="250"
+                 IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}, FallbackValue=True}"/>
 
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="14,0,0,0">
             <ComboBox ItemsSource="{Binding Resultats}"
                       SelectedItem="{Binding SelectedResult}"
                       DisplayMemberPath="LanguageName"
-                      IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}, FallbackValue=True}"/>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Langue :" />
-                <TextBlock Text="{Binding SelectedResult.LanguageName}" />
+                      IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}, FallbackValue=True}"
+                      Width="220"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                <TextBlock Text="Langue : " Width="80"/>
+                <TextBlock Text="{Binding SelectedResult.LanguageName}" FontWeight="SemiBold"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Confiance :" />
-                <TextBlock Text="{Binding SelectedResult.Confidence}" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                <TextBlock Text="Confiance : " Width="80"/>
+                <TextBlock Text="{Binding SelectedResult.Confidence}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Est fiable :" />
-                <TextBlock Text="{Binding SelectedResult.IsReliable}" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                <TextBlock Text="Est fiable : " Width="80"/>
+                <TextBlock Text="{Binding SelectedResult.IsReliable}"/>
             </StackPanel>
         </StackPanel>
-
+        
         <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
                    Text="{Binding BusyText}"
-                   Foreground="Gray"
-                   FontStyle="Italic"
-                   Margin="0,8,0,0"
+                   Foreground="Gray" FontStyle="Italic" Margin="0,8,0,0"
                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"/>
 
         <Button Grid.Row="3" Grid.Column="0"
                 Content="Détecter"
-                Command="{Binding DetectCommand}"
-                Width="150"
+                Width="180" Height="32" Margin="0,10,0,0"
                 HorizontalAlignment="Left"
-                Margin="0,10,0,0"/>
+                Command="{Binding DetectCommand}"/>
     </Grid>
 </UserControl>

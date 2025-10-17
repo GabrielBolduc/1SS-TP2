@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace Tp2.ViewModels
     {
         private readonly DetectLanguageService _service = new();
 
+        // Texte multiligne saisi
         private string _inputText = "";
         public string InputText
         {
@@ -19,9 +22,7 @@ namespace Tp2.ViewModels
             set
             {
                 if (Set(ref _inputText, value))
-                {
-                    DetectCommand.RaiseCanExecuteChanged();
-                }
+                    DetectCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -32,9 +33,7 @@ namespace Tp2.ViewModels
             set
             {
                 if (Set(ref _isBusy, value))
-                {
-                    DetectCommand.RaiseCanExecuteChanged();
-                }
+                    DetectCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -61,8 +60,7 @@ namespace Tp2.ViewModels
             DetectCommand = new AsyncCommand(DetectAsync, CanDetect);
         }
 
-        private bool CanDetect()
-            => !IsBusy && !string.IsNullOrWhiteSpace(InputText);
+        private bool CanDetect() => !IsBusy && !string.IsNullOrWhiteSpace(InputText);
 
         private async Task DetectAsync()
         {
@@ -74,16 +72,16 @@ namespace Tp2.ViewModels
                 return;
             }
 
+            // Garde-fou taille (plan gratuit)
             var bytes = Encoding.UTF8.GetByteCount(InputText);
             const int softLimit = 256 * 1024; // 256 Ko
             if (bytes > softLimit)
             {
                 var go = MessageBox.Show(
                     $"Votre texte fait ~{bytes / 1024} Ko. " +
-                    "Le plan gratuit limite le traitement quotidien à ~1 Mo. Voulez-vous continuer ?",
+                    "Le plan gratuit limite à ~1 Mo/jour. Continuer ?",
                     "Texte volumineux",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (go != MessageBoxResult.Yes) return;
             }
 
@@ -95,29 +93,31 @@ namespace Tp2.ViewModels
                 Resultats.Clear();
                 SelectedResult = null;
 
-                var list = await _service.DetectAsync(InputText.Trim());
-                foreach (var item in list) Resultats.Add(item);
-                SelectedResult = Resultats.Count > 0 ? Resultats[0] : null;
+                var list = await _service.DetectAsync(InputText);
+
+                foreach (var item in list)
+                    Resultats.Add(item);
+
+                SelectedResult = Resultats.FirstOrDefault();
 
                 if (Resultats.Count == 0)
-                    MessageBox.Show("Aucune langue n’a été détectée pour ce texte.", "Détection",
+                    MessageBox.Show("Aucune langue n’a été détectée.", "Détection",
                                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (HttpRequestException ex)
             {
                 var msg = ex.Message;
-
                 if (msg.Contains("401") || msg.Contains("Unauthorized"))
-                    MessageBox.Show("Jeton invalide ou manquant (401 Unauthorized). Vérifiez votre configuration.",
+                    MessageBox.Show("Jeton invalide ou manquant (401 Unauthorized). Vérifiez la configuration.",
                                     "Détection", MessageBoxButton.OK, MessageBoxImage.Error);
                 else if (msg.Contains("429"))
-                    MessageBox.Show("Limite atteinte (429 Too Many Requests). Réessayez plus tard ou réduisez la taille du texte.",
+                    MessageBox.Show("Limite atteinte (429). Réessayez plus tard ou réduisez la taille du texte.",
                                     "Détection", MessageBoxButton.OK, MessageBoxImage.Warning);
                 else
-                    MessageBox.Show($"Erreur HTTP lors de la détection :\n{msg}",
+                    MessageBox.Show($"Erreur HTTP :\n{msg}",
                                     "Détection", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Erreur lors de la détection :\n{ex.Message}",
                                 "Détection", MessageBoxButton.OK, MessageBoxImage.Error);
